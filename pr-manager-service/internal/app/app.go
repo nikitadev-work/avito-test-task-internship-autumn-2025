@@ -9,6 +9,9 @@ import (
 	"sync"
 	"time"
 
+	repo "pr-manager-service/internal/repository"
+	uc "pr-manager-service/internal/usecase"
+
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/nikitadev-work/avito-test-task-internship-autumn-2025/common/kit/logger"
 	"github.com/nikitadev-work/avito-test-task-internship-autumn-2025/common/kit/metrics"
@@ -49,11 +52,13 @@ func Run(ctx context.Context, cfg *config.Config) error {
 	}
 	defer pool.Close()
 
-	// repository
-	repository := repo.NewRepository(pool, cfg.PostgreSQL.TxMarker)
+	// repositories
+	teamRepo := repo.NewTeamRepository(pool)
+	userRepo := repo.NewUserRepository(pool)
+	prRepo := repo.NewPullRequestRepository(pool)
 
 	// usecase
-	usecase := uc.NewPurchaseUsecase(repository)
+	usecase := uc.NewService(teamRepo, userRepo, prRepo)
 
 	// http
 	httpMux := http.NewServeMux()
