@@ -1,31 +1,10 @@
 package domain
 
-import (
-	"time"
-
-	"github.com/google/uuid"
-)
-
-var Status int
-
-const (
-	Open = iota
-	Merged
-)
-
-type PulLRequest struct {
-	Id                uuid.UUID
-	Name              string
-	AuthorId          uuid.UUID
+type PullRequest struct {
+	PullRequestId     string
+	PullRequestName   string
+	AuthorId          string
 	StatusId          int
-	NeedMoreReviewers bool
-	IsActive          bool
-	CreatedAt         time.Time
-	UpdatedAt         time.Time
+	AssignedReviewers []string
 }
 
-type ReviewerAssignment struct {
-	UserId        uuid.UUID
-	PullRequestId uuid.UUID
-	Slot          int
-}

@@ -52,14 +52,8 @@ func Run(ctx context.Context, cfg *config.Config) error {
 	// repository
 	repository := repo.NewRepository(pool, cfg.PostgreSQL.TxMarker)
 
-	// txmanager
-	txManager := txmanager.NewTxManager(pool, l, cfg.PostgreSQL.TxMarker)
-
-	// token provider
-	tokenProvider := tokenprovider.NewTokenProvider(cfg.SecretKey)
-
 	// usecase
-	usecase := uc.NewPurchaseUsecase(repository, txManager, tokenProvider)
+	usecase := uc.NewPurchaseUsecase(repository)
 
 	// http
 	httpMux := http.NewServeMux()
