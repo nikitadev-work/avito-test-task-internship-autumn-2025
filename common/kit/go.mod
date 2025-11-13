@@ -1,4 +1,4 @@
-module github.com/nikitadev-work/SyncBuyProject/common/kit
+module github.com/nikitadev-work/avito-test-task-internship-autumn-2025/common/kit
 
 go 1.23.0
 

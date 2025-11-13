@@ -5,6 +5,7 @@ import (
 	"database/sql"
 
 	"pr-manager-service/internal/domain"
+	uc "pr-manager-service/internal/usecase"
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -13,6 +14,8 @@ import (
 type TeamRepository struct {
 	pool *pgxpool.Pool
 }
+
+var _ uc.TeamRepositoryInterface = (*TeamRepository)(nil)
 
 func NewTeamRepository(pool *pgxpool.Pool) *TeamRepository {
 	return &TeamRepository{pool: pool}
