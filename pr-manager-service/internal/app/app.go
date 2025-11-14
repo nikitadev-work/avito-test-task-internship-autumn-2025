@@ -9,6 +9,7 @@ import (
 	"sync"
 	"time"
 
+	httpadapter "pr-manager-service/internal/adapters/httpadapter"
 	repo "pr-manager-service/internal/repository"
 	uc "pr-manager-service/internal/usecase"
 
@@ -61,13 +62,17 @@ func Run(ctx context.Context, cfg *config.Config) error {
 	usecase := uc.NewService(teamRepo, userRepo, prRepo)
 
 	// http
-	httpMux := http.NewServeMux()
-	httpServer := httpserver.New(l, httpMux, cfg.HTTP.Port)
+	httpMux := httpadapter.NewRouter(usecase)
+	// регистрируем метрики на том же mux
 	httpMux.Handle("/metrics", promhttp.Handler())
+	httpAddr := ":" + cfg.HTTP.Port
+	httpServer := httpadapter.NewServer(httpAddr, httpMux)
 
 	httpErrCh := make(chan error, 1)
 	go func() {
-		l.Info("start http server", nil)
+		l.Info("start http server", map[string]any{
+			"http.addr": httpAddr,
+		})
 		if err := httpServer.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 			httpErrCh <- err
 		}
