@@ -14,13 +14,14 @@ import (
 	uc "pr-manager-service/internal/usecase"
 
 	"github.com/jackc/pgx/v5/pgxpool"
-	"github.com/nikitadev-work/avito-test-task-internship-autumn-2025/common/kit/logger"
+	kitlogger "github.com/nikitadev-work/avito-test-task-internship-autumn-2025/common/kit/logger"
+	kitmetrics "github.com/nikitadev-work/avito-test-task-internship-autumn-2025/common/kit/metrics"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 func Run(ctx context.Context, cfg *config.Config) error {
 	// logger
-	l := logger.NewLogger(
+	l := kitlogger.NewLogger(
 		cfg.Log.Level,
 		map[string]any{
 			"service": cfg.App.Name,
@@ -31,9 +32,7 @@ func Run(ctx context.Context, cfg *config.Config) error {
 	l.Info("start configuration", nil)
 
 	// metrics
-	if cfg.Metrics.Enabled == true {
-		//metrics.InitMetrics()
-	}
+	kitmetrics.InitMetrics()
 
 	// postgresql
 	sslMode := "require"
@@ -63,8 +62,11 @@ func Run(ctx context.Context, cfg *config.Config) error {
 	// http
 	httpMux := httpadapter.NewRouter(usecase)
 	httpMux.Handle("/metrics", promhttp.Handler())
+
+	handlerWithMetrics := kitmetrics.HTTPMiddleware(cfg.App.Name, httpMux)
+
 	httpAddr := ":" + cfg.HTTP.Port
-	httpServer := httpadapter.NewServer(httpAddr, httpMux)
+	httpServer := httpadapter.NewServer(httpAddr, handlerWithMetrics)
 
 	httpErrCh := make(chan error, 1)
 	go func() {
