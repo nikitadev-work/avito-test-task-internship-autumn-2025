@@ -1,61 +1,59 @@
 package usecase
 
-import "errors"
-
 func validateCreateTeamInput(in CreateTeamInput) error {
 	if in.TeamName == "" {
-		return errors.New("team_name is required")
+		return ErrTeamNameRequired
 	}
 	return nil
 }
 
 func validateGetTeamInput(in GetTeamInput) error {
 	if in.TeamName == "" {
-		return errors.New("team_name is required")
+		return ErrTeamNameRequired
 	}
 	return nil
 }
 
 func validateSetIsActiveInput(in SetIsActiveInput) error {
 	if in.UserId == "" {
-		return errors.New("user_id is required")
+		return ErrUserIdRequired
 	}
 	return nil
 }
 
 func validateGetUserReviewsInput(in GetUserReviewsInput) error {
 	if in.UserId == "" {
-		return errors.New("user_id is required")
+		return ErrUserIdRequired
 	}
 	return nil
 }
 
 func validateCreatePullRequestInput(in CreatePullRequestInput) error {
 	if in.PullRequestId == "" {
-		return errors.New("pull_request_id is required")
+		return ErrPullRequestIdRequired
 	}
 	if in.PullRequestName == "" {
-		return errors.New("pull_request_name is required")
+		return ErrPullRequestNameRequired
 	}
 	if in.AuthorId == "" {
-		return errors.New("author_id is required")
+		return ErrAuthorIdRequired
 	}
 	return nil
 }
 
 func validateMergePullRequestInput(in MergePullRequestInput) error {
 	if in.PullRequestId == "" {
-		return errors.New("pull_request_id is required")
+		return ErrPullRequestIdRequired
 	}
 	return nil
 }
 
 func validateReassignReviewerInput(in ReassignReviewerInput) error {
 	if in.PullRequestId == "" {
-		return errors.New("pull_request_id is required")
+		return ErrPullRequestIdRequired
 	}
 	if in.OldUserId == "" {
-		return errors.New("old_user_id is required")
+		return ErrOldUserIdRequired
 	}
 	return nil
 }

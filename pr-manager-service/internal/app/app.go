@@ -15,7 +15,6 @@ import (
 
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/nikitadev-work/avito-test-task-internship-autumn-2025/common/kit/logger"
-	"github.com/nikitadev-work/avito-test-task-internship-autumn-2025/common/kit/metrics"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
@@ -33,7 +32,7 @@ func Run(ctx context.Context, cfg *config.Config) error {
 
 	// metrics
 	if cfg.Metrics.Enabled == true {
-		metrics.InitMetrics()
+		//metrics.InitMetrics()
 	}
 
 	// postgresql
@@ -59,11 +58,10 @@ func Run(ctx context.Context, cfg *config.Config) error {
 	prRepo := repo.NewPullRequestRepository(pool)
 
 	// usecase
-	usecase := uc.NewService(teamRepo, userRepo, prRepo)
+	usecase := uc.NewService(teamRepo, userRepo, prRepo, l)
 
 	// http
 	httpMux := httpadapter.NewRouter(usecase)
-	// регистрируем метрики на том же mux
 	httpMux.Handle("/metrics", promhttp.Handler())
 	httpAddr := ":" + cfg.HTTP.Port
 	httpServer := httpadapter.NewServer(httpAddr, httpMux)

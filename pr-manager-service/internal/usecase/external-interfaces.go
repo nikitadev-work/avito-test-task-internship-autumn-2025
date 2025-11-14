@@ -25,3 +25,10 @@ type PullRequestRepositoryInterface interface {
 	ReplaceReviewer(ctx context.Context, prId, oldUserId, newUserId string) error
 	GetActiveTeamMembers(ctx context.Context, teamName string) ([]domain.User, error)
 }
+
+type LoggerInterface interface {
+	Debug(msg string, params map[string]any)
+	Info(msg string, params map[string]any)
+	Warn(msg string, params map[string]any)
+	Error(msg string, params map[string]any)
+}
