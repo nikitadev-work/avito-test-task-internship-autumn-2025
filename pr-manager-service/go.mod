@@ -5,16 +5,20 @@ go 1.23.0
 toolchain go1.24.10
 
 require (
+	github.com/caarlos0/env v3.5.0+incompatible
+	github.com/jackc/pgx/v5 v5.7.6
+	github.com/nikitadev-work/avito-test-task-internship-autumn-2025/common/kit v0.0.0-20251113220320-90e4fe11857c
+	github.com/prometheus/client_golang v1.23.2
+)
+
+require (
 	github.com/beorn7/perks v1.0.1 // indirect
-	github.com/caarlos0/env v3.5.0+incompatible // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
-	github.com/google/uuid v1.6.0 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20240606120523-5a60cdf6a761 // indirect
-	github.com/jackc/pgx/v5 v5.7.6 // indirect
 	github.com/jackc/puddle/v2 v2.2.2 // indirect
+	github.com/kr/text v0.2.0 // indirect
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
-	github.com/prometheus/client_golang v1.23.2 // indirect
 	github.com/prometheus/client_model v0.6.2 // indirect
 	github.com/prometheus/common v0.66.1 // indirect
 	github.com/prometheus/procfs v0.16.1 // indirect
