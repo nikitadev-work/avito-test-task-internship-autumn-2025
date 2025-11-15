@@ -1,7 +1,5 @@
 github.com/beorn7/perks v1.0.1 h1:VlbKKnNfV8bJzeqoa4cOKqO6bYr3WgKZxO8Z16+hsOM=
 github.com/beorn7/perks v1.0.1/go.mod h1:G2ZrVWU2WbWT9wwq4/hrbKbnv/1ERSJQ0ibhJ6rlkpw=
-github.com/caarlos0/env v3.5.0+incompatible h1:Yy0UN8o9Wtr/jGHZDpCBLpNrzcFLLM2yixi/rBrKyJs=
-github.com/caarlos0/env v3.5.0+incompatible/go.mod h1:tdCsowwCzMLdkqRYDlHpZCp2UooDD3MspDBjZ2AD02Y=
 github.com/caarlos0/env/v10 v10.0.0 h1:yIHUBZGsyqCnpTkbjk8asUlx6RFhhEs+h7TOBdgdzXA=
 github.com/caarlos0/env/v10 v10.0.0/go.mod h1:ZfulV76NvVPw3tm591U4SwL3Xx9ldzBP9aGxzeN7G18=
 github.com/cespare/xxhash/v2 v2.3.0 h1:UL815xU9SqsFlibzuggzjXhog7bL6oX9BbNZnL2UFvs=
@@ -30,10 +28,6 @@ github.com/kylelemons/godebug v1.1.0 h1:RPNrshWIDI6G2gRW9EHilWtl7Z6Sb1BR0xunSBf0
 github.com/kylelemons/godebug v1.1.0/go.mod h1:9/0rRGxNHcop5bhtWyNeEfOS8JIWk580+fNqagV/RAw=
 github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 h1:C3w9PqII01/Oq1c1nUAm88MOHcQC9l5mIlSMApZMrHA=
 github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822/go.mod h1:+n7T8mK8HuQTcFwEeznm/DIxMOiR9yIdICNftLE1DvQ=
-github.com/nikitadev-work/avito-test-task-internship-autumn-2025 v0.0.0-20251114134730-b5c8eee7bccb h1:OTDZ2iA/1oAVqYwshhuQd0dguEvFfm75Q33/8avIvN0=
-github.com/nikitadev-work/avito-test-task-internship-autumn-2025 v0.0.0-20251114134730-b5c8eee7bccb/go.mod h1:Rh/oENFSIy0D+ZDCP5DQ3o7a/uRWuUhlaGCG4cRerc4=
-github.com/nikitadev-work/avito-test-task-internship-autumn-2025/common/kit v0.0.0-20251114133402-367c87f63e2d h1:ZoiskcLqG7BsqhHNncydC48avnnGiYnmCt/Bny64Gic=
-github.com/nikitadev-work/avito-test-task-internship-autumn-2025/common/kit v0.0.0-20251114133402-367c87f63e2d/go.mod h1:Y5ss3p5sMcT8z22dvLcKZ9O2hgaus+0abQBht6QhVaI=
 github.com/nikitadev-work/avito-test-task-internship-autumn-2025/common/kit v0.0.0-20251114134730-b5c8eee7bccb h1:ZyR/xelH6AHL3VZmuICEsYQsPiiHdzYEED+nkTj4hlg=
 github.com/nikitadev-work/avito-test-task-internship-autumn-2025/common/kit v0.0.0-20251114134730-b5c8eee7bccb/go.mod h1:XJJS5GIo4Kp62BGf8jbll6Ooa2CR9vDmzs2WUYoTjUw=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=

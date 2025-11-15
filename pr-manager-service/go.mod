@@ -5,8 +5,8 @@ go 1.23.0
 toolchain go1.24.10
 
 require (
-	github.com/jackc/pgx/v5 v5.7.6
 	github.com/caarlos0/env/v10 v10.0.0
+	github.com/jackc/pgx/v5 v5.7.6
 	github.com/nikitadev-work/avito-test-task-internship-autumn-2025/common/kit v0.0.0-20251114134730-b5c8eee7bccb
 	github.com/prometheus/client_golang v1.23.2
 )
