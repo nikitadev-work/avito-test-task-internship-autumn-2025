@@ -7,6 +7,13 @@
       "type": "datasource",
       "pluginId": "loki",
       "pluginName": "Loki"
+    },
+    {
+      "name": "VAR_DS_LOKI",
+      "type": "constant",
+      "label": "DS_LOKI",
+      "value": "Loki",
+      "description": ""
     }
   ],
   "__elements": {},
@@ -54,7 +61,7 @@
     ]
   },
   "description": "Log Viewer Dashboard for Loki",
-  "editable": false,
+  "editable": true,
   "fiscalYearStartMonth": 0,
   "gnetId": 13639,
   "graphTooltip": 0,
@@ -263,6 +270,25 @@
         "query": "",
         "skipUrlSync": false,
         "type": "textbox"
+      },
+      {
+        "hide": 2,
+        "name": "DS_LOKI",
+        "query": "${VAR_DS_LOKI}",
+        "skipUrlSync": false,
+        "type": "constant",
+        "current": {
+          "value": "${VAR_DS_LOKI}",
+          "text": "${VAR_DS_LOKI}",
+          "selected": false
+        },
+        "options": [
+          {
+            "value": "${VAR_DS_LOKI}",
+            "text": "${VAR_DS_LOKI}",
+            "selected": false
+          }
+        ]
       }
     ]
   },
@@ -286,8 +312,8 @@
     ]
   },
   "timezone": "",
-  "title": "Logs / App",
+  "title": "Logs Dashboard",
   "uid": "sadlil-loki-apps-dashboard",
-  "version": 1,
+  "version": 3,
   "weekStart": ""
 }
