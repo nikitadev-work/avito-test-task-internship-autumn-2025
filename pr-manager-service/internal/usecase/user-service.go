@@ -47,6 +47,12 @@ func (s *Service) SetIsActive(ctx context.Context, in SetIsActiveInput) (*SetIsA
 		"team_name": out.TeamName,
 	})
 
+	if in.IsActive {
+		s.metrics.IncUserActivated()
+	} else {
+		s.metrics.IncUserDeactivated()
+	}
+
 	return out, nil
 }
 

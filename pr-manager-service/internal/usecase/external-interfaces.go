@@ -32,3 +32,12 @@ type LoggerInterface interface {
 	Warn(msg string, params map[string]any)
 	Error(msg string, params map[string]any)
 }
+
+type MetricsInterface interface {
+	IncTeamCreated()
+	IncUserActivated()
+	IncUserDeactivated()
+	IncPullRequestCreated()
+	IncPullRequestMerged()
+	IncPullRequestReassigned()
+}

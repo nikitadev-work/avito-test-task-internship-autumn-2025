@@ -3,14 +3,13 @@ package config
 import (
 	"fmt"
 
-	"github.com/caarlos0/env"
+	env "github.com/caarlos0/env/v10"
 )
 
 type Config struct {
 	App        App
 	Log        Log
 	HTTP       HTTP
-	Metrics    Metrics
 	PostgreSQL PostgreSQL
 }
 
@@ -27,10 +26,6 @@ type HTTP struct {
 	Port string `env:"HTTP_PORT,required"`
 }
 
-type Metrics struct {
-	Enabled bool `env:"METRICS_ENABLED,required"`
-}
-
 type PostgreSQL struct {
 	User       string `env:"DB_USER,required"`
 	Password   string `env:"DB_PASSWORD,required"`
@@ -38,7 +33,6 @@ type PostgreSQL struct {
 	Port       string `env:"DB_PORT,required"`
 	Name       string `env:"DB_NAME,required"`
 	SslEnabled bool   `env:"DB_SSL_ENABLED,required"`
-	TxMarker   string `env:"DB_TX_MARKER,required"`
 }
 
 func NewConfig() (*Config, error) {

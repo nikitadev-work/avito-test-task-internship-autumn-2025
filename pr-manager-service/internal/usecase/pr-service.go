@@ -117,6 +117,8 @@ func (s *Service) CreatePullRequest(ctx context.Context, in CreatePullRequestInp
 		"assigned_reviewers": out.PR.AssignedReviewers,
 	})
 
+	s.metrics.IncPullRequestCreated()
+
 	return out, nil
 }
 
@@ -158,6 +160,8 @@ func (s *Service) MergePullRequest(ctx context.Context, in MergePullRequestInput
 		"pull_request_id": out.PR.PullRequestId,
 		"status":          out.PR.Status,
 	})
+
+	s.metrics.IncPullRequestMerged()
 
 	return out, nil
 }
@@ -329,6 +333,8 @@ func (s *Service) ReassignReviewer(ctx context.Context, in ReassignReviewerInput
 		"old_user_id":     in.OldUserId,
 		"new_user_id":     out.ReplacedBy,
 	})
+
+	s.metrics.IncPullRequestReassigned()
 
 	return out, nil
 }

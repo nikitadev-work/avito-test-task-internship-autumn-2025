@@ -13,6 +13,7 @@ import (
 var (
 	httpRequestsTotal   *prometheus.CounterVec
 	httpRequestDuration *prometheus.HistogramVec
+	businessOpsTotal    *prometheus.CounterVec
 	metricsInitOnce     sync.Once
 )
 
@@ -34,6 +35,14 @@ func InitMetrics() {
 			},
 			[]string{"service", "method", "path", "status"},
 		)
+
+		businessOpsTotal = promauto.NewCounterVec(
+			prometheus.CounterOpts{
+				Name: "business_operations_total",
+				Help: "Count of business-level operations.",
+			},
+			[]string{"service", "operation", "result"},
+		)
 	})
 }
 
@@ -47,7 +56,6 @@ func (r *statusRecorder) WriteHeader(code int) {
 	r.ResponseWriter.WriteHeader(code)
 }
 
-// Middleware to record metrics
 func HTTPMiddleware(serviceName string, next http.Handler) http.Handler {
 	InitMetrics()
 
@@ -67,18 +75,25 @@ func HTTPMiddleware(serviceName string, next http.Handler) http.Handler {
 			return
 		}
 
-		path := r.URL.Path
-		method := r.Method
-		statusStr := strconv.Itoa(rec.status)
-
 		labels := prometheus.Labels{
 			"service": serviceName,
-			"method":  method,
-			"path":    path,
-			"status":  statusStr,
+			"method":  r.Method,
+			"path":    r.URL.Path,
+			"status":  strconv.Itoa(rec.status),
 		}
 
 		httpRequestsTotal.With(labels).Inc()
 		httpRequestDuration.With(labels).Observe(duration.Seconds())
 	})
+}
+
+func IncBusinessOperation(service, operation, result string) {
+	if businessOpsTotal == nil {
+		return
+	}
+	businessOpsTotal.With(prometheus.Labels{
+		"service":   service,
+		"operation": operation,
+		"result":    result,
+	}).Inc()
 }
