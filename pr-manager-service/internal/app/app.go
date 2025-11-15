@@ -10,12 +10,13 @@ import (
 	"time"
 
 	httpadapter "pr-manager-service/internal/adapters/httpadapter"
+	metricsadapter "pr-manager-service/internal/adapters/metricsadapter"
 	repo "pr-manager-service/internal/repository"
 	uc "pr-manager-service/internal/usecase"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 	kitlogger "github.com/nikitadev-work/avito-test-task-internship-autumn-2025/common/kit/logger"
-	kitmetrics "github.com/nikitadev-work/avito-test-task-internship-autumn-2025/common/kit/metrics"
+	"github.com/nikitadev-work/avito-test-task-internship-autumn-2025/common/kit/metrics"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
@@ -32,7 +33,10 @@ func Run(ctx context.Context, cfg *config.Config) error {
 	l.Info("start configuration", nil)
 
 	// metrics
-	kitmetrics.InitMetrics()
+	metrics.InitMetrics()
+
+	// business metrics adapter
+	businessMetrics := metricsadapter.NewMetrics(cfg.App.Name)
 
 	// postgresql
 	sslMode := "require"
@@ -57,13 +61,13 @@ func Run(ctx context.Context, cfg *config.Config) error {
 	prRepo := repo.NewPullRequestRepository(pool)
 
 	// usecase
-	usecase := uc.NewService(teamRepo, userRepo, prRepo, l)
+	usecase := uc.NewService(teamRepo, userRepo, prRepo, l, businessMetrics)
 
 	// http
 	httpMux := httpadapter.NewRouter(usecase)
 	httpMux.Handle("/metrics", promhttp.Handler())
 
-	handlerWithMetrics := kitmetrics.HTTPMiddleware(cfg.App.Name, httpMux)
+	handlerWithMetrics := metrics.HTTPMiddleware(cfg.App.Name, httpMux)
 
 	httpAddr := ":" + cfg.HTTP.Port
 	httpServer := httpadapter.NewServer(httpAddr, handlerWithMetrics)

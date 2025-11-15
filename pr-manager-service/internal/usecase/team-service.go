@@ -43,6 +43,8 @@ func (s *Service) CreateTeam(ctx context.Context, in CreateTeamInput) (*CreateTe
 		"members_count": len(out.Members),
 	})
 
+	s.metrics.IncTeamCreated()
+
 	return out, nil
 }
 

@@ -1,0 +1,27 @@
+services:
+  pr-manager-service:
+    build:
+      context: ../pr-manager-service
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      - services-network
+
+  postgres-db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: dbuser
+      POSTGRES_PASSWORD: dbpassword
+      POSTGRES_DB: pr-manager-db
+    ports:
+      - "5432:5432"
+    networks:
+      - services-network
+
+networks:
+  services-network:
+    driver: bridge
+
+volumes:
+  db_data:
