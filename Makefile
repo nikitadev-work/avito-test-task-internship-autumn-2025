@@ -16,9 +16,10 @@ dev-restart:
 	@echo "Restarting dev environment..."
 	@dev-down dev-up
 
-down-volumes:
+clear-volumes:
 	@echo "Removing docker volumes..."
-	@docker compose down -v
+	@docker compose -f $(COMPOSE_FILE) down -v
+	@docker volume prune -f
 
 dev-logs-pr-manager-service:
 	@echo "Logs of pr-manager-service:"

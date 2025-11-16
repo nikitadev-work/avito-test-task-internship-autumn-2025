@@ -58,10 +58,10 @@ func (r *UserRepository) SetIsActive(ctx context.Context, userId string, isActiv
 	}
 
 	getTeamSQL := `
-		SELECT team_id
+		SELECT team_name
 		FROM memberships
 		WHERE user_id = $1
-		ORDER BY team_id
+		ORDER BY team_name
 		LIMIT 1
 	`
 	var teamName string
@@ -78,10 +78,10 @@ func (r *UserRepository) SetIsActive(ctx context.Context, userId string, isActiv
 
 func (r *UserRepository) GetTeamName(ctx context.Context, userId string) (string, error) {
 	getTeamSQL := `
-		SELECT team_id
+		SELECT team_name
 		FROM memberships
 		WHERE user_id = $1
-		ORDER BY team_id
+		ORDER BY team_name
 		LIMIT 1
 	`
 
@@ -96,4 +96,3 @@ func (r *UserRepository) GetTeamName(ctx context.Context, userId string) (string
 
 	return teamName, nil
 }
-

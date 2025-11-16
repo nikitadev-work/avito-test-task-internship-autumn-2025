@@ -206,7 +206,7 @@ func (r *PullRequestRepository) GetActiveTeamMembers(ctx context.Context, teamNa
 		SELECT u.user_id, u.username, u.is_active
 		FROM memberships m
 		JOIN users u ON u.user_id = m.user_id
-		WHERE m.team_id = $1
+		WHERE m.team_name = $1
 		  AND u.is_active = true
 	`
 	rows, err := r.pool.Query(ctx, querySQL, teamName)
