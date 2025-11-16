@@ -3,7 +3,11 @@ COMPOSE_FILE = ./ops/docker-compose.dev.yml
 
 .PHONY: dev-up dev-down dev-restart clear-volumes \
 	dev-logs-pr-manager-service dev-logs-all \
-	lint-pr-manager-service lint-common lint
+	lint-pr-manager-service lint-common lint test-integration \
+	load-create-pr load-reassign load-get-reviews
+
+
+# Docker compose
 
 dev-up:
 	@echo "Starting dev environment..."
@@ -21,6 +25,9 @@ clear-volumes:
 	@docker compose -f $(COMPOSE_FILE) down -v
 	@docker volume prune -f
 
+
+# Logs
+
 dev-logs-pr-manager-service:
 	@echo "Logs of pr-manager-service:"
 	@docker compose -f $(COMPOSE_FILE) logs -f pr-manager-service
@@ -28,6 +35,9 @@ dev-logs-pr-manager-service:
 dev-logs-all:
 	@echo "All logs of all services:"
 	@docker compose -f $(COMPOSE_FILE) logs
+
+
+# Linting
 
 lint-pr-manager-service:
 	@echo "Linting pr-manager-service package..."
@@ -52,3 +62,9 @@ load-reassign:
 load-get-reviews:
 	k6 run ops/load-testing/k6_get_reviews.js
 
+
+# Integration tests
+
+test-integration:
+	@echo "Running integration tests (service must be running)..."
+	@cd pr-manager-service && go test ./internal/integration-tests -count=1
