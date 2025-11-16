@@ -7,15 +7,21 @@ import (
 )
 
 type HTTPHandler struct {
-	svc *usecase.Service
+	svc     *usecase.Service
+	appName string
+	version string
 }
 
-func NewHTTPHandler(svc *usecase.Service) *HTTPHandler {
-	return &HTTPHandler{svc: svc}
+func NewHTTPHandler(svc *usecase.Service, appName, version string) *HTTPHandler {
+	return &HTTPHandler{
+		svc:     svc,
+		appName: appName,
+		version: version,
+	}
 }
 
-func NewRouter(svc *usecase.Service) *http.ServeMux {
-	h := NewHTTPHandler(svc)
+func NewRouter(svc *usecase.Service, appName, version string) *http.ServeMux {
+	h := NewHTTPHandler(svc, appName, version)
 
 	mux := http.NewServeMux()
 
@@ -32,7 +38,8 @@ func NewRouter(svc *usecase.Service) *http.ServeMux {
 	mux.HandleFunc("/pullRequest/merge", h.handleMergePullRequest)
 	mux.HandleFunc("/pullRequest/reassign", h.handleReassignReviewer)
 
-	// Health
+	// Stats / Health
+	mux.HandleFunc("/stats", h.handleStats)
 	mux.HandleFunc("/health", h.handleHealth)
 
 	return mux
