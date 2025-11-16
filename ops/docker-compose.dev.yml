@@ -8,7 +8,10 @@ services:
     env_file:
       - ../pr-manager-service/.env 
     depends_on:
-      - postgres-db
+      postgres-db:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
     networks:
       - services-network
 
@@ -24,6 +27,27 @@ services:
       - db_data:/var/lib/postgresql/data
     networks:
       - services-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dbuser -d pr-manager-db"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  migrate:
+    image: migrate/migrate
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+    volumes:
+      - ../pr-manager-service/migrations:/migrations
+    command: [
+      "-path=/migrations",
+      "-database=postgres://dbuser:dbpassword@postgres-db:5432/pr-manager-db?sslmode=disable",
+      "up"
+    ]
+    networks:
+      - services-network
+
 
   prometheus:
     image: prom/prometheus:v2.54.0

@@ -53,9 +53,9 @@ func (r *TeamRepository) CreateTeam(ctx context.Context, teamName string, member
 			is_active = EXCLUDED.is_active
 	`
 	insertMembershipSQL := `
-		INSERT INTO memberships (user_id, team_id)
+		INSERT INTO memberships (user_id, team_name)
 		VALUES ($1, $2)
-		ON CONFLICT (user_id, team_id) DO NOTHING
+		ON CONFLICT (user_id, team_name) DO NOTHING
 	`
 
 	// Create users and memberships for them
@@ -94,7 +94,7 @@ func (r *TeamRepository) GetTeam(ctx context.Context, teamName string) (*domain.
 		SELECT u.user_id, u.username, u.is_active
 		FROM memberships m
 		JOIN users u ON u.user_id = m.user_id
-		WHERE m.team_id = $1
+		WHERE m.team_name = $1
 		ORDER BY u.username
 	`
 	// Get all members
