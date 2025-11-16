@@ -72,7 +72,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "fieldConfig": {
             "defaults": {
@@ -151,7 +151,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${DS_PROMETHEUS}"
+                "uid": "Prometheus"
               },
               "editorMode": "code",
               "expr": "rate(process_cpu_seconds_total[1m])",
@@ -167,7 +167,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "fieldConfig": {
             "defaults": {
@@ -246,7 +246,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${DS_PROMETHEUS}"
+                "uid": "Prometheus"
               },
               "editorMode": "code",
               "expr": "go_memstats_heap_sys_bytes",
@@ -262,7 +262,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "fieldConfig": {
             "defaults": {
@@ -341,7 +341,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${DS_PROMETHEUS}"
+                "uid": "Prometheus"
               },
               "editorMode": "code",
               "expr": "go_memstats_heap_objects",
@@ -357,7 +357,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "fieldConfig": {
             "defaults": {
@@ -436,7 +436,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${DS_PROMETHEUS}"
+                "uid": "Prometheus"
               },
               "editorMode": "code",
               "expr": "go_memstats_last_gc_time_seconds",
@@ -452,7 +452,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "fieldConfig": {
             "defaults": {
@@ -531,7 +531,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${DS_PROMETHEUS}"
+                "uid": "Prometheus"
               },
               "editorMode": "code",
               "expr": "go_threads",
@@ -547,7 +547,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "fieldConfig": {
             "defaults": {
@@ -626,7 +626,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${DS_PROMETHEUS}"
+                "uid": "Prometheus"
               },
               "editorMode": "code",
               "expr": "rate(go_gc_duration_seconds_count[1m])",
@@ -642,7 +642,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "fieldConfig": {
             "defaults": {
@@ -721,7 +721,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${DS_PROMETHEUS}"
+                "uid": "Prometheus"
               },
               "editorMode": "code",
               "expr": "go_memstats_alloc_bytes",
@@ -737,7 +737,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "fieldConfig": {
             "defaults": {
@@ -816,7 +816,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${DS_PROMETHEUS}"
+                "uid": "Prometheus"
               },
               "editorMode": "code",
               "expr": "go_goroutines",
@@ -846,7 +846,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "fieldConfig": {
             "defaults": {
@@ -925,7 +925,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${DS_PROMETHEUS}"
+                "uid": "Prometheus"
               },
               "editorMode": "code",
               "expr": "histogram_quantile(\n  0.95,\n  sum by (le) (\n    rate(http_request_duration_seconds_bucket{service=\"pr-manager-service\"}[5m])\n  )\n)",
@@ -941,7 +941,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "fieldConfig": {
             "defaults": {
@@ -1020,7 +1020,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${DS_PROMETHEUS}"
+                "uid": "Prometheus"
               },
               "editorMode": "code",
               "expr": "sum by (method) (\n  rate(http_requests_total{service=\"pr-manager-service\"}[1m])\n)",
@@ -1036,7 +1036,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "fieldConfig": {
             "defaults": {
@@ -1115,7 +1115,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${DS_PROMETHEUS}"
+                "uid": "Prometheus"
               },
               "editorMode": "code",
               "expr": "sum(rate(http_requests_total{service=\"pr-manager-service\"}[1m]))",
@@ -1131,7 +1131,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "fieldConfig": {
             "defaults": {
@@ -1210,7 +1210,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${DS_PROMETHEUS}"
+                "uid": "Prometheus"
               },
               "editorMode": "code",
               "expr": "sum(rate(http_request_duration_seconds_sum{service=\"pr-manager-service\"}[5m]))\n/\nsum(rate(http_request_duration_seconds_count{service=\"pr-manager-service\"}[5m]))",
@@ -1243,7 +1243,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -1323,7 +1323,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "editorMode": "code",
           "expr": "pr_manager_teams_created_total{service=\"pr-manager-service\"}",
@@ -1339,7 +1339,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -1419,7 +1419,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "editorMode": "code",
           "expr": "pr_manager_pull_requests_created_total{service=\"pr-manager-service\"}",
@@ -1435,7 +1435,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -1515,7 +1515,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "editorMode": "code",
           "expr": "pr_manager_users_activated_total{service=\"pr-manager-service\"}",
@@ -1531,7 +1531,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -1611,7 +1611,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "editorMode": "code",
           "expr": "pr_manager_pull_requests_merged_total{service=\"pr-manager-service\"}",
@@ -1627,7 +1627,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -1707,7 +1707,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "editorMode": "code",
           "expr": "pr_manager_users_deactivated_total{service=\"pr-manager-service\"}",
@@ -1723,7 +1723,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "Prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -1803,7 +1803,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "Prometheus"
           },
           "editorMode": "code",
           "expr": "pr_manager_pull_requests_reassigned_total{service=\"pr-manager-service\"}",
@@ -1817,7 +1817,7 @@
       "type": "timeseries"
     }
   ],
-  "refresh": "",
+  "refresh": "10s",
   "schemaVersion": 39,
   "tags": [],
   "templating": {
@@ -1844,8 +1844,8 @@
     ]
   },
   "time": {
-    "from": "2025-11-15T18:24:44.167Z",
-    "to": "2025-11-15T22:24:44.167Z"
+    "from": "now-1h",
+    "to": "now"
   },
   "timeRangeUpdatedDuringEditOrView": false,
   "timepicker": {},

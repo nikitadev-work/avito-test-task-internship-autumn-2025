@@ -92,7 +92,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "${DS_LOKI}"
+        "uid": "Loki"
       },
       "fieldConfig": {
         "defaults": {
@@ -175,7 +175,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "${DS_LOKI}"
+            "uid": "Loki"
           },
           "expr": "sum(count_over_time({job=\"$app\"} |= \"$search\" [$__interval]))",
           "legendFormat": "",
@@ -187,7 +187,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "${DS_LOKI}"
+        "uid": "Loki"
       },
       "gridPos": {
         "h": 25,
@@ -211,7 +211,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "${DS_LOKI}"
+            "uid": "Loki"
           },
           "expr": "{job=\"$app\"} |= \"$search\" | logfmt",
           "hide": false,
@@ -232,7 +232,7 @@
         "current": {},
         "datasource": {
           "type": "loki",
-          "uid": "${DS_LOKI}"
+          "uid": "Loki"
         },
         "definition": "label_values(job)",
         "hide": 0,
@@ -274,18 +274,18 @@
       {
         "hide": 2,
         "name": "DS_LOKI",
-        "query": "${VAR_DS_LOKI}",
+        "query": "Loki",
         "skipUrlSync": false,
         "type": "constant",
         "current": {
-          "value": "${VAR_DS_LOKI}",
-          "text": "${VAR_DS_LOKI}",
+          "value": "Loki",
+          "text": "Loki",
           "selected": false
         },
         "options": [
           {
-            "value": "${VAR_DS_LOKI}",
-            "text": "${VAR_DS_LOKI}",
+            "value": "Loki",
+            "text": "Loki",
             "selected": false
           }
         ]
