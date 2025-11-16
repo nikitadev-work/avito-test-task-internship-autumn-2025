@@ -1,0 +1,1177 @@
+{
+	"info": {
+		"_postman_id": "30a775f2-9432-4214-8b88-fe488283e21a",
+		"name": "PR Reviewer Assignment Service (Test Task, Fall 2025)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25095332"
+	},
+	"item": [
+		{
+			"name": "team",
+			"item": [
+				{
+					"name": "add",
+					"item": [
+						{
+							"name": "Создать команду с участниками (создаёт/обновляет пользователей)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"team_name\": \"payments\",\n  \"members\": [\n    {\n      \"user_id\": \"u1\",\n      \"username\": \"Alice\",\n      \"is_active\": true\n    },\n    {\n      \"user_id\": \"u2\",\n      \"username\": \"Bob\",\n      \"is_active\": true\n    }\n  ]\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/team/add",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"team",
+										"add"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Команда создана",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"team_name\": \"payments\",\n  \"members\": [\n    {\n      \"user_id\": \"u1\",\n      \"username\": \"Alice\",\n      \"is_active\": true\n    },\n    {\n      \"user_id\": \"u2\",\n      \"username\": \"Bob\",\n      \"is_active\": true\n    }\n  ]\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/team/add",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"team",
+												"add"
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"team\": {\n    \"team_name\": \"backend\",\n    \"members\": [\n      {\n        \"user_id\": \"u1\",\n        \"username\": \"Alice\",\n        \"is_active\": true\n      },\n      {\n        \"user_id\": \"u2\",\n        \"username\": \"Bob\",\n        \"is_active\": true\n      }\n    ]\n  }\n}"
+								},
+								{
+									"name": "Команда уже существует",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"team_name\": \"payments\",\n  \"members\": [\n    {\n      \"user_id\": \"u1\",\n      \"username\": \"Alice\",\n      \"is_active\": true\n    },\n    {\n      \"user_id\": \"u2\",\n      \"username\": \"Bob\",\n      \"is_active\": true\n    }\n  ]\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/team/add",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"team",
+												"add"
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"error\": {\n    \"code\": \"TEAM_EXISTS\",\n    \"message\": \"team_name already exists\"\n  }\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "get",
+					"item": [
+						{
+							"name": "Получить команду с участниками",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/team/get?team_name={{teamName}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"team",
+										"get"
+									],
+									"query": [
+										{
+											"key": "team_name",
+											"value": "{{teamName}}",
+											"description": "Уникальное имя команды"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Объект команды",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/team/get?team_name=string",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"team",
+												"get"
+											],
+											"query": [
+												{
+													"key": "team_name",
+													"value": "string",
+													"description": "Уникальное имя команды"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"team_name\": \"backend\",\n  \"members\": [\n    {\n      \"user_id\": \"u1\",\n      \"username\": \"Alice\",\n      \"is_active\": true\n    },\n    {\n      \"user_id\": \"u2\",\n      \"username\": \"Bob\",\n      \"is_active\": true\n    }\n  ]\n}"
+								},
+								{
+									"name": "Команда не найдена",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/team/get?team_name=string",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"team",
+												"get"
+											],
+											"query": [
+												{
+													"key": "team_name",
+													"value": "string",
+													"description": "Уникальное имя команды"
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"error\": {\n    \"code\": \"NOT_FOUND\",\n    \"message\": \"resource not found\"\n  }\n}"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "setIsActive",
+					"item": [
+						{
+							"name": "Установить флаг активности пользователя",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"user_id\": \"u2\",\n  \"is_active\": false\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/users/setIsActive",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"setIsActive"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Обновлённый пользователь",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"user_id\": \"u2\",\n  \"is_active\": false\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/users/setIsActive",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"users",
+												"setIsActive"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"user\": {\n    \"user_id\": \"u2\",\n    \"username\": \"Bob\",\n    \"team_name\": \"backend\",\n    \"is_active\": false\n  }\n}"
+								},
+								{
+									"name": "Нет/неверный админский токен",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"user_id\": \"u2\",\n  \"is_active\": false\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/users/setIsActive",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"users",
+												"setIsActive"
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"error\": {\n    \"code\": \"NOT_FOUND\",\n    \"message\": \"resource not found\"\n  }\n}"
+								},
+								{
+									"name": "Пользователь не найден",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"user_id\": \"u2\",\n  \"is_active\": false\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/users/setIsActive",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"users",
+												"setIsActive"
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"error\": {\n    \"code\": \"NOT_FOUND\",\n    \"message\": \"resource not found\"\n  }\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "getReview",
+					"item": [
+						{
+							"name": "Получить PR'ы, где пользователь назначен ревьювером",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/users/getReview?user_id={{userId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"getReview"
+									],
+									"query": [
+										{
+											"key": "user_id",
+											"value": "{{userId}}",
+											"description": "Идентификатор пользователя"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Список PR'ов пользователя",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/users/getReview?user_id=string",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"users",
+												"getReview"
+											],
+											"query": [
+												{
+													"key": "user_id",
+													"value": "string",
+													"description": "Идентификатор пользователя"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"user_id\": \"u2\",\n  \"pull_requests\": [\n    {\n      \"pull_request_id\": \"pr-1001\",\n      \"pull_request_name\": \"Add search\",\n      \"author_id\": \"u1\",\n      \"status\": \"OPEN\"\n    }\n  ]\n}"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "pullRequest",
+			"item": [
+				{
+					"name": "create",
+					"item": [
+						{
+							"name": "Создать PR и автоматически назначить до 2 ревьюверов из команды автора",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"pull_request_id\": \"pr-1001\",\n  \"pull_request_name\": \"Add search\",\n  \"author_id\": \"u1\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/pullRequest/create",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"pullRequest",
+										"create"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "PR создан",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"pull_request_id\": \"pr-1001\",\n  \"pull_request_name\": \"Add search\",\n  \"author_id\": \"u1\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/pullRequest/create",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"pullRequest",
+												"create"
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"pr\": {\n    \"pull_request_id\": \"pr-1001\",\n    \"pull_request_name\": \"Add search\",\n    \"author_id\": \"u1\",\n    \"status\": \"OPEN\",\n    \"assigned_reviewers\": [\n      \"u2\",\n      \"u3\"\n    ]\n  }\n}"
+								},
+								{
+									"name": "Автор/команда не найдены",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"pull_request_id\": \"pr-1001\",\n  \"pull_request_name\": \"Add search\",\n  \"author_id\": \"u1\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/pullRequest/create",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"pullRequest",
+												"create"
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"error\": {\n    \"code\": \"NOT_FOUND\",\n    \"message\": \"resource not found\"\n  }\n}"
+								},
+								{
+									"name": "PR уже существует",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"pull_request_id\": \"pr-1001\",\n  \"pull_request_name\": \"Add search\",\n  \"author_id\": \"u1\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/pullRequest/create",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"pullRequest",
+												"create"
+											]
+										}
+									},
+									"status": "Conflict",
+									"code": 409,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"error\": {\n    \"code\": \"PR_EXISTS\",\n    \"message\": \"PR id already exists\"\n  }\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "merge",
+					"item": [
+						{
+							"name": "Пометить PR как MERGED (идемпотентная операция)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"pull_request_id\": \"pr-1001\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/pullRequest/merge",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"pullRequest",
+										"merge"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "PR в состоянии MERGED",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"pull_request_id\": \"pr-1001\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/pullRequest/merge",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"pullRequest",
+												"merge"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"pr\": {\n    \"pull_request_id\": \"pr-1001\",\n    \"pull_request_name\": \"Add search\",\n    \"author_id\": \"u1\",\n    \"status\": \"MERGED\",\n    \"assigned_reviewers\": [\n      \"u2\",\n      \"u3\"\n    ],\n    \"mergedAt\": \"2025-10-24T12:34:56Z\"\n  }\n}"
+								},
+								{
+									"name": "PR не найден",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"pull_request_id\": \"pr-1001\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/pullRequest/merge",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"pullRequest",
+												"merge"
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"error\": {\n    \"code\": \"NOT_FOUND\",\n    \"message\": \"resource not found\"\n  }\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "reassign",
+					"item": [
+						{
+							"name": "Переназначить конкретного ревьювера на другого из его команды",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"pull_request_id\": \"pr-1001\",\n  \"old_user_id\": \"u2\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/pullRequest/reassign",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"pullRequest",
+										"reassign"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Переназначение выполнено",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"pull_request_id\": \"pr-1001\",\n  \"old_reviewer_id\": \"u2\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/pullRequest/reassign",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"pullRequest",
+												"reassign"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"pr\": {\n    \"pull_request_id\": \"pr-1001\",\n    \"pull_request_name\": \"Add search\",\n    \"author_id\": \"u1\",\n    \"status\": \"OPEN\",\n    \"assigned_reviewers\": [\n      \"u3\",\n      \"u5\"\n    ]\n  },\n  \"replaced_by\": \"u5\"\n}"
+								},
+								{
+									"name": "PR или пользователь не найден",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"pull_request_id\": \"pr-1001\",\n  \"old_user_id\": \"u2\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/pullRequest/reassign",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"pullRequest",
+												"reassign"
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"error\": {\n    \"code\": \"NOT_FOUND\",\n    \"message\": \"resource not found\"\n  }\n}"
+								},
+								{
+									"name": "Нельзя менять после MERGED",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"pull_request_id\": \"pr-1001\",\n  \"old_user_id\": \"u2\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/pullRequest/reassign",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"pullRequest",
+												"reassign"
+											]
+										}
+									},
+									"status": "Conflict",
+									"code": 409,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"error\": {\n    \"code\": \"PR_MERGED\",\n    \"message\": \"cannot reassign on merged PR\"\n  }\n}"
+								},
+								{
+									"name": "Пользователь не был назначен ревьювером",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"pull_request_id\": \"pr-1001\",\n  \"old_user_id\": \"u2\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/pullRequest/reassign",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"pullRequest",
+												"reassign"
+											]
+										}
+									},
+									"status": "Conflict",
+									"code": 409,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"error\": {\n    \"code\": \"NOT_ASSIGNED\",\n    \"message\": \"reviewer is not assigned to this PR\"\n  }\n}"
+								},
+								{
+									"name": "Нет доступных кандидатов",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"pull_request_id\": \"pr-1001\",\n  \"old_user_id\": \"u2\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/pullRequest/reassign",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"pullRequest",
+												"reassign"
+											]
+										}
+									},
+									"status": "Conflict",
+									"code": 409,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"error\": {\n    \"code\": \"NO_CANDIDATE\",\n    \"message\": \"no active replacement candidate in team\"\n  }\n}"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{adminToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080"
+		}
+	]
+}

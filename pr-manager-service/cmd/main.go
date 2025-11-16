@@ -5,9 +5,10 @@ import (
 	"log"
 	"os"
 	"os/signal"
+	"syscall"
+
 	"pr-manager-service/config"
 	"pr-manager-service/internal/app"
-	"syscall"
 )
 
 func main() {
