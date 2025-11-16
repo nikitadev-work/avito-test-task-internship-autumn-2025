@@ -6,6 +6,7 @@ import (
 	env "github.com/caarlos0/env/v10"
 )
 
+// Config holds application configuration loaded from env
 type Config struct {
 	App        App
 	Log        Log

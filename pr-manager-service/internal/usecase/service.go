@@ -1,5 +1,6 @@
 package usecase
 
+// Service contains business logic for teams, users and pull requests
 type Service struct {
 	teams   TeamRepositoryInterface
 	users   UserRepositoryInterface

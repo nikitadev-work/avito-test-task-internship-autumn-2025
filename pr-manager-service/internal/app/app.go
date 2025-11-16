@@ -5,9 +5,10 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-	"pr-manager-service/config"
 	"sync"
 	"time"
+
+	"pr-manager-service/config"
 
 	httpadapter "pr-manager-service/internal/adapters/httpadapter"
 	metricsadapter "pr-manager-service/internal/adapters/metricsadapter"
@@ -122,7 +123,11 @@ func Run(ctx context.Context, cfg *config.Config) error {
 			l.Info("gracefully finished", nil)
 			return nil
 		case <-shutdownCtx.Done():
-			httpServer.Close()
+			if err := httpServer.Close(); err != nil {
+				l.Error("failed to close http server", map[string]any{
+					"error": err.Error(),
+				})
+			}
 			err := errors.New("graceful shutdown timeout")
 			l.Error("graceful shutdown error", map[string]any{
 				"error": err.Error(),

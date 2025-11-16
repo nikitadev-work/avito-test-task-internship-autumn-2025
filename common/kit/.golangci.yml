@@ -1,0 +1,31 @@
+run:
+  timeout: 3m
+  tests: true
+
+linters:
+  enable:
+    - govet
+    - errcheck
+    - staticcheck
+    - ineffassign
+    - gosimple
+    - revive
+
+linters-settings:
+  revive:
+    rules:
+      - name: exported
+        disabled: true
+      - name: package-comments
+        disabled: true
+      - name: var-naming
+        disabled: true
+      - name: receiver-naming
+        disabled: true
+      - name: argument-limit
+        disabled: true
+      - name: cyclomatic
+        disabled: true
+
+issues:
+  exclude-use-default: false
