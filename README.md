@@ -10,11 +10,33 @@
 - k6 для нагрузочного тестирования
 - golangci-lint для статического анализа
 
+---
+
+
+### Для быстрой проверки сервиса выполните `make dev-up` в корне проекта, после этого вам будут доступны [следующие компоненты](README.md#url-адреса-инфраструктуры) 
+
+
+## Документация
+
+- [Окружение, локальная разработка и команды Makefile](docs/environment-and-makefile.md)
+- [Тестирование (unit, integration, k6, Postman)](docs/testing.md)
+- [Отчет по нагрузочному тестированию](docs/load-testing-report.md)
+
+---
+
+## Навигация по данному README.md
+- [Структура проекта](#структура-проекта)
+- [URL-адреса инфраструктуры](#url-адреса-инфраструктуры)
+- [Внешнее API и аутентификация](#внешнее-api-и-аутентификация)
+- [Continuous Integration (CI)](#continuous-integration-ci)
+- [Development Workflow](#development-workflow)
+- [Реализованные требования](#реализованные-требования)
+- [Допущения и принятые решения](#допущения-и-принятые-решения)
 
 
 ## Структура проекта
 
-```
+```text
 .
 ├── pr-manager-service/
 │   ├── cmd/
@@ -33,9 +55,7 @@
 │   └── go.sum
 │
 ├── common/
-│   └── kit/
-│       ├── go.mod
-│       └── go.sum
+│   └── kit/ - общий модуль с логгером и метриками
 │
 ├── ops/
 │   ├── docker-compose.dev.yml
@@ -47,80 +67,16 @@
 │   │       ├── datasources/
 │   │       └── dashboards/
 │   └── load-testing/
-│       ├── k6_create_pr.js
-│       └── k6_get_reviews.js
 │
 ├── docs/
-│   ├── contracts/
-│   │   └── pr-manager-service-openapi.yml
-│   └── postman/
-│       ├── PR Reviewer Assignment Service (Test Task, Fall 2025).postman_collection.json
-│       └── pr-manager-service-local.postman_environment.json
+│   ├── contracts/ - спецификация openapi
+│   └── postman/ - коллекция и окружение
 │
 ├── .github/
 │   └── workflows/
 │       └── ci.yml
 ├── Makefile
-├── README.md
-└── load-testing-report.md
-```
----
-
-## Makefile: основные команды
-
-В корне репозитория находится `Makefile`, который упрощает работу с окружением, тестами и нагрузкой.
-
-### Dev-окружение
-
-```bash
-# Запуск dev-окружения (сервис, Postgres, Prometheus, Grafana, Loki, Swagger и т.д.)
-make dev-up
-
-# Остановка окружения
-make dev-down
-
-# Перезапуск окружения
-make dev-restart
-
-# Полная очистка: остановка и удаление volumes
-make clear-volumes
-
-# Логи только сервиса
-make dev-logs-pr-manager-service
-
-# Логи всех контейнеров docker-compose
-make dev-logs-all
-```
-
-### Линтер
-
-```bash
-# Линтинг сервиса
-make lint-pr-manager-service
-
-# Линтинг общего модуля common/kit
-make lint-common
-
-# Линтинг всего проекта
-make lint
-```
-
-`.golangci.yml` лежит в репозитории сервиса, в конфигурации включены проверки:
-- форматирование (gofumpt),
-- базовые ошибки (errcheck, unused),
-- стиль (revive и др.).
-
-### Интеграционные тесты
-
-```bash
-# Интеграционные тесты (требуется запущенный сервис: make dev-up)
-make test-integration
-```
-
-Под капотом команда выполняет:
-
-```bash
-cd pr-manager-service && go test ./internal/integration-tests -count=1
+└── README.md
 ```
 
 ---
@@ -133,12 +89,10 @@ cd pr-manager-service && go test ./internal/integration-tests -count=1
   `http://localhost:8080`
 
 - Swagger UI (документация API):  
-  `http://localhost:8082`  
-  Использует `docs/contracts/pr-manager-service-openapi.yml`.
+  `http://localhost:8082`
 
 - Prometheus:  
-  `http://localhost:9090`  
-  Можно смотреть сырые метрики, делать запросы PromQL. Сервис экспонирует метрики по `/metrics`.
+  `http://localhost:9090`
 
 - Grafana:  
   `http://localhost:3000`  
@@ -149,12 +103,10 @@ cd pr-manager-service && go test ./internal/integration-tests -count=1
   - **Logs Dashboard** — дашборд логов из Loki.
 
 - Loki:  
-  `http://localhost:3100`  
-  Источник логов для Grafana.
+  `http://localhost:3100` — источник логов для Grafana.
 
 - Node Exporter:  
-  `http://localhost:9100`  
-  Системные метрики, подключены в Prometheus и Grafana.
+  `http://localhost:9100` — системные метрики.
 
 - Статус/health самого сервиса:
   - `GET /health` — простой healthcheck.
@@ -162,7 +114,7 @@ cd pr-manager-service && go test ./internal/integration-tests -count=1
 
 ---
 
-## API и аутентификация
+## Внешнее API и аутентификация
 
 Основные эндпоинты сервиса:
 
@@ -188,142 +140,49 @@ cd pr-manager-service && go test ./internal/integration-tests -count=1
 
 ---
 
-## Тестирование
+## Continuous Integration (CI)
 
-### Unit-тесты (usecase-слой)
+Проект использует GitHub Actions для автоматической проверки качества кода и запуска unit-тестов при каждом push или pull-request в ветку `main`.
 
-Юнит-тесты покрывают usecase-слой в `pr-manager-service/internal/usecase`:
+Workflow расположен по пути:
 
-- валидация входных DTO (`validators.go`),
-- мапперы между доменом и DTO (`mappers.go`),
-- методы сервиса:
-  - `CreateTeam`, `GetTeam`,
-  - `SetIsActive`, `GetUserReviews`,
-  - `CreatePullRequest`, `MergePullRequest`, `ReassignReviewer`.
-
-Запуск:
-
-```bash
-cd pr-manager-service
-go test ./internal/usecase -count=1
+```text
+.github/workflows/ci.yml
 ```
 
-`-count=1` отключает кеширование результатов тестов.
+Основные шаги:
 
-### Интеграционные тесты
+1. Получение репозитория
+2. Установка
+3. Установка `golangci-lint`
 
-Интеграционные тесты находятся в `pr-manager-service/internal/integration-tests` и работают поверх запущенного сервиса (по HTTP).
+4. Запуск линтера
 
-Перед запуском необходимо поднять окружение:
+5. Запуск unit-тестов usecase-слоя
 
-```bash
-make dev-up
-```
-
-Далее:
-
-```bash
-make test-integration
-```
-
-Тесты проверяют сценарии:
-
-- создание команды и чтение её через `/team/add` + `/team/get`;
-- создание PR и получение ревью по пользователю через `/pullRequest/create` + `/users/getReview`.
+Интеграционные и нагрузочные тесты в CI не запускаются, так как требуют развернутого docker-окружения и внешних сервисов и выходят за рамки простого CI для тестового задания.
 
 ---
 
-## Нагрузочное тестирование (k6)
+## Development Workflow
 
-Нагрузочные сценарии находятся в `ops/load-testing/`:
+Весь процесс разработки велся в GitHub Projects в формате Kanban-доски.  
+Для каждой задачи создавался отдельный task (issue) и соответствующая feature-ветка.
 
-- `k6_create_pr.js` — нагрузка на `POST /pullRequest/create`.
-- `k6_get_reviews.js` — нагрузка на `GET /users/getReview`.
+Подход включал:
 
-Перед запуском нужно поднять сервис:
+- постановку задач в столбец *Backlog*;
+- перемещение задач по стадиям *In Progress → Review → Done*;
+- выполнение каждого функционального блока в отдельной ветке (`features/*`);
+- создание pull request после завершения задачи;
+- автоматическую проверку изменений через GitHub Actions (линтер + unit-тесты);
+- поддержание чистой истории коммитов и прозрачного хода работы.
 
-```bash
-make dev-up
-```
-
-Затем:
-
-```bash
-# сценарий создания PR под нагрузкой
-make load-create-pr
-
-# сценарий чтения ревью по пользователю под нагрузкой
-make load-get-reviews
-```
-
-Под капотом выполняются команды:
-
-```bash
-k6 run ops/load-testing/k6_create_pr.js
-k6 run ops/load-testing/k6_get_reviews.js
-```
-
-Отчёт по результатам нагрузочного тестирования и сравнение с целевыми SLI приведены в отдельном файле `load-testing-report.md`.
-
----
-
-## Проверка сервиса через Postman
-
-В `docs/` лежат:
-
-- коллекция:  
-  `PR Reviewer Assignment Service (Test Task, Fall 2025).postman_collection.json`
-- окружение:  
-  `pr-manager-service-local.postman_environment.json`
-
-Как использовать:
-
-1. Импортировать окружение `pr-manager-service-local` в Postman.
-2. Импортировать коллекцию `PR Reviewer Assignment Service (Test Task, Fall 2025)`.
-3. Выбрать окружение `pr-manager-service-local`.
-4. Запустить backend:
-
-   ```bash
-   make dev-up
-   ```
-
-5. Выполнять запросы в рекомендуемом порядке:
-   - `Create team` (`POST /team/add`)
-   - `Get team` (`GET /team/get`)
-   - `Set user active/inactive` (`POST /users/setIsActive`)
-   - `Create pull request` (`POST /pullRequest/create`)
-   - `Reassign reviewer` (`POST /pullRequest/reassign`)
-   - `Merge pull request` (`POST /pullRequest/merge`)
-   - `Get user reviews` (`GET /users/getReview`)
-   - `Stats` (`GET /stats`)
-   - `Health` (`GET /health`)
-
-Токены (`admin:user_id` / `user:user_id`) уже преднастроены в коллекции/окружении.
-
----
-
-## Stats endpoint
-
-В HTTP-адаптере реализован эндпоинт:
-
-```http
-GET /stats
-```
-
-Ответ содержит:
-
-```json
-{
-  "service": "<имя сервиса из cfg.App.Name>",
-  "version": "<версия из cfg.App.Version>",
-  "time": "<текущее время в формате RFC3339 UTC>"
-}
-```
-
-Это позволяет быстро проверить:
-
-- имя и версию развернутого сервиса,
-- что сервис жив и отвечает по HTTP.
+Такая организация позволила:
+- структурировать выполнение задания в виде небольших автономных задач;
+- легко отслеживать прогресс;
+- проводить разработку в соответствии с best-practices Git Flow;
+- обеспечить читаемость и воспроизводимость истории репозитория.
 
 ---
 
@@ -333,7 +192,7 @@ GET /stats
 
 - Реализован основной REST API в соответствии с контрактом.
 - Хранение данных в PostgreSQL, миграции выполнены через отдельный контейнер `migrate`.
-- Разделение слоёв в формате **Чистой архитектуры**: HTTP-адаптер, usecase-слой, хранилище, доменная модель.
+- Разделение слоёв в духе Чистой архитектуры: HTTP-адаптер, usecase-слой, хранилище, доменная модель.
 - Логирование через общий модуль (`common/kit/logger`).
 - Метрики в формате Prometheus, экспорт по `/metrics`.
 - Настроены Prometheus, Grafana, Loki, Node Exporter, дашборды для метрик и логов.
@@ -342,8 +201,14 @@ GET /stats
 Дополнительная часть:
 
 - Добавлен простой эндпоинт статистики: `GET /stats` (имя, версия, время).
-- Проведено нагрузочное тестирование решения (k6, два сценария; отчёт в `load-testing-report.md`).
+- Проведено нагрузочное тестирование решения (k6, два сценария). Отчёт в `load-testing-report.md`.
 - Реализовано интеграционное/E2E-тестирование (HTTP-тесты в `internal/integration-tests`).
 - Описана конфигурация и запуск линтера (`golangci-lint`, gofumpt, errcheck и др.).
 
-Массовая деактивация пользователей команды и расширенная безопасная переназначаемость открытых PR не реализованы в рамках тестового, но архитектура сервисов и usecase-слоя позволяет добавить эту функциональность поверх существующих интерфейсов.
+---
+
+## Допущения и принятые решения
+
+- Аутентификация реализована через простой формат токена `Authorization: Bearer <role>:<user_id>`, так как в задании не было требований к полноценной auth-системе. Это позволяет сфокусироваться на бизнес-логике сервиса.
+- Эндпоинт `/stats` возвращает базовую информацию о сервисе (name, version, time), а не сложную бизнес-статистику. Для более подробных показателей используются метрики Prometheus и дашборды Grafana.
+- Массовая деактивация и безопасная переназначаемость открытых PR не реализованы в рамках тестового задания из-за ограничения по времени. Архитектура usecase-слоя и интерфейсов хранилища позволяет добавить эту логику позднее.

@@ -4,7 +4,7 @@ COMPOSE_FILE = ./ops/docker-compose.dev.yml
 .PHONY: dev-up dev-down dev-restart clear-volumes \
 	dev-logs-pr-manager-service dev-logs-all \
 	lint-pr-manager-service lint-common lint test-integration \
-	load-create-pr load-reassign load-get-reviews
+	load-create-pr load-reassign load-get-reviews unit-test
 
 
 # Docker compose
@@ -65,3 +65,10 @@ load-get-reviews:
 test-integration:
 	@echo "Running integration tests (service must be running)..."
 	@cd pr-manager-service && go test ./internal/integration-tests -count=1
+
+
+# Unit tests
+
+unit-test:
+	@echo "Running unit tests..."
+	@cd pr-manager-service && go test ./internal/usecase -count=1
