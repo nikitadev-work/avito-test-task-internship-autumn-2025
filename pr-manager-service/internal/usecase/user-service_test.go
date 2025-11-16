@@ -13,8 +13,6 @@ type userRepoMockForUserService struct {
 	setUserResp   *domain.User
 	setTeamName   string
 	setErr        error
-	getPRsResp    []domain.PullRequest
-	getPRsErr     error
 }
 
 func (m *userRepoMockForUserService) GetUser(ctx context.Context, userId string) (*domain.User, error) {

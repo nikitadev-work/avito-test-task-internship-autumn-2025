@@ -87,7 +87,11 @@ func TestCreateTeamAndGetTeam_Integration(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to call /team/add: %v", err)
 	}
-	defer resp.Body.Close()
+	defer func() {
+		if err := resp.Body.Close(); err != nil {
+			t.Logf("failed to close resp body: %v", err)
+		}
+	}()
 
 	if resp.StatusCode != http.StatusCreated {
 		t.Fatalf("expected status 201, got %d", resp.StatusCode)
@@ -99,7 +103,11 @@ func TestCreateTeamAndGetTeam_Integration(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to call /team/get: %v", err)
 	}
-	defer resp2.Body.Close()
+	defer func() {
+		if err := resp2.Body.Close(); err != nil {
+			t.Logf("failed to close resp body: %v", err)
+		}
+	}()
 
 	if resp2.StatusCode != http.StatusOK {
 		t.Fatalf("expected status 200, got %d", resp2.StatusCode)
@@ -151,7 +159,9 @@ func TestCreatePullRequestAndGetUserReviews_Integration(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to call /team/add: %v", err)
 	}
-	respTeam.Body.Close()
+	if err := respTeam.Body.Close(); err != nil {
+		t.Logf("failed to close respTeam body: %v", err)
+	}
 	if respTeam.StatusCode != http.StatusCreated {
 		t.Fatalf("expected status 201 from /team/add, got %d", respTeam.StatusCode)
 	}
@@ -168,7 +178,11 @@ func TestCreatePullRequestAndGetUserReviews_Integration(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to call /pullRequest/create: %v", err)
 	}
-	defer respPR.Body.Close()
+	defer func() {
+		if err := respPR.Body.Close(); err != nil {
+			t.Logf("failed to close resp body: %v", err)
+		}
+	}()
 
 	if respPR.StatusCode != http.StatusCreated {
 		t.Fatalf("expected status 201 from /pullRequest/create, got %d", respPR.StatusCode)
@@ -185,7 +199,11 @@ func TestCreatePullRequestAndGetUserReviews_Integration(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to call /users/getReview: %v", err)
 	}
-	defer respGet.Body.Close()
+	defer func() {
+		if err := respGet.Body.Close(); err != nil {
+			t.Logf("failed to close resp body: %v", err)
+		}
+	}()
 
 	if respGet.StatusCode != http.StatusOK {
 		t.Fatalf("expected status 200 from /users/getReview, got %d", respGet.StatusCode)
