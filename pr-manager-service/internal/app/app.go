@@ -65,7 +65,7 @@ func Run(ctx context.Context, cfg *config.Config) error {
 	usecase := uc.NewService(teamRepo, userRepo, prRepo, l, businessMetrics)
 
 	// http
-	httpMux := httpadapter.NewRouter(usecase)
+	httpMux := httpadapter.NewRouter(usecase, cfg.App.Name, cfg.App.Version)
 	httpMux.Handle("/metrics", promhttp.Handler())
 
 	handlerWithMetrics := metrics.HTTPMiddleware(cfg.App.Name, httpMux)
