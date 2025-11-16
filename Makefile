@@ -56,9 +56,6 @@ lint: lint-pr-manager-service lint-common
 load-create-pr:
 	k6 run ops/load-testing/k6_create_pr.js
 
-load-reassign:
-	k6 run ops/load-testing/k6_reassign_pr.js
-
 load-get-reviews:
 	k6 run ops/load-testing/k6_get_reviews.js
 
