@@ -92,6 +92,38 @@ make dev-logs-pr-manager-service
 make dev-logs-all
 ```
 
+## Состав окружения
+
+| Компонент              | Назначение                                   | Порт          |
+|------------------------|-----------------------------------------------|---------------|
+| pr-manager-service     | Основной сервис                               | 8080          |
+| PostgreSQL 16          | Хранилище данных                              | 5432          |
+| Swagger UI             | Документация API (OpenAPI)                    | 8082          |
+| Prometheus             | Метрики, сбор данных                          | 9090          |
+| Grafana                | Дашборды метрик и логов                       | 3000          |
+| Loki                   | Хранилище логов                               | 3100          |
+| Promtail               | Агент, собирающий логи контейнеров            | (нет порта)   |
+| Node Exporter          | Системные метрики хоста                       | 9100          |
+
+
+---
+
+## Переменные окружения
+
+Сервис считывает конфигурацию из `.env` файла в каталоге `pr-manager-service`. Пример `.env.example` так же находится в каталоге сервиса.
+
+---
+
+## Как всё работает вместе
+
+- PostgreSQL поднимается первым.
+- Контейнер `migrate` применяет SQL-миграции из `pr-manager-service/migrations`.
+- После успешных миграций запускается `pr-manager-service`.
+- Мониторинг (Prometheus + Grafana) и логирование (Loki + Promtail) поднимаются параллельно.
+- Swagger UI монтирует OpenAPI-файл из `docs/contracts/` и доступен по `http://localhost:8082`.
+
+Данное окружение необходимо для комфортной локальной разработки — достаточно запустить `make dev-up`.
+
 ### Линтер
 
 ```bash
@@ -117,11 +149,6 @@ make lint
 make test-integration
 ```
 
-Под капотом команда выполняет:
-
-```bash
-cd pr-manager-service && go test ./internal/integration-tests -count=1
-```
 
 ---
 
@@ -133,12 +160,10 @@ cd pr-manager-service && go test ./internal/integration-tests -count=1
   `http://localhost:8080`
 
 - Swagger UI (документация API):  
-  `http://localhost:8082`  
-  Использует `docs/contracts/pr-manager-service-openapi.yml`.
+  `http://localhost:8082`
 
 - Prometheus:  
-  `http://localhost:9090`  
-  Можно смотреть сырые метрики, делать запросы PromQL. Сервис экспонирует метрики по `/metrics`.
+  `http://localhost:9090`
 
 - Grafana:  
   `http://localhost:3000`  
@@ -149,12 +174,10 @@ cd pr-manager-service && go test ./internal/integration-tests -count=1
   - **Logs Dashboard** — дашборд логов из Loki.
 
 - Loki:  
-  `http://localhost:3100`  
-  Источник логов для Grafana.
+  `http://localhost:3100` Источник логов для Grafana.
 
 - Node Exporter:  
-  `http://localhost:9100`  
-  Системные метрики, подключены в Prometheus и Grafana.
+  `http://localhost:9100` Системные метрики.
 
 - Статус/health самого сервиса:
   - `GET /health` — простой healthcheck.
@@ -192,7 +215,7 @@ cd pr-manager-service && go test ./internal/integration-tests -count=1
 
 ### Unit-тесты (usecase-слой)
 
-Юнит-тесты покрывают usecase-слой в `pr-manager-service/internal/usecase`:
+Юнит-тесты покрывают usecase-слой сервиса:
 
 - валидация входных DTO (`validators.go`),
 - мапперы между доменом и DTO (`mappers.go`),
@@ -204,15 +227,12 @@ cd pr-manager-service && go test ./internal/integration-tests -count=1
 Запуск:
 
 ```bash
-cd pr-manager-service
-go test ./internal/usecase -count=1
+make unit-test
 ```
-
-`-count=1` отключает кеширование результатов тестов.
 
 ### Интеграционные тесты
 
-Интеграционные тесты находятся в `pr-manager-service/internal/integration-tests` и работают поверх запущенного сервиса (по HTTP).
+Интеграционные тесты находятся в `pr-manager-service/internal/integration-tests`.
 
 Перед запуском необходимо поднять окружение:
 
@@ -256,13 +276,6 @@ make load-create-pr
 make load-get-reviews
 ```
 
-Под капотом выполняются команды:
-
-```bash
-k6 run ops/load-testing/k6_create_pr.js
-k6 run ops/load-testing/k6_get_reviews.js
-```
-
 Отчёт по результатам нагрузочного тестирования и сравнение с целевыми SLI приведены в отдельном файле `load-testing-report.md`.
 
 ---
@@ -272,14 +285,14 @@ k6 run ops/load-testing/k6_get_reviews.js
 В `docs/` лежат:
 
 - коллекция:  
-  `PR Reviewer Assignment Service (Test Task, Fall 2025).postman_collection.json`
+  `pr-manager-service.postman_collection.json`
 - окружение:  
   `pr-manager-service-local.postman_environment.json`
 
 Как использовать:
 
 1. Импортировать окружение `pr-manager-service-local` в Postman.
-2. Импортировать коллекцию `PR Reviewer Assignment Service (Test Task, Fall 2025)`.
+2. Импортировать коллекцию `pr-manager-service.postman_collection`.
 3. Выбрать окружение `pr-manager-service-local`.
 4. Запустить backend:
 
@@ -327,6 +340,75 @@ GET /stats
 
 ---
 
+# Continuous Integration (CI)
+
+Проект использует GitHub Actions для автоматической проверки качества кода и запуска unit-тестов при каждом push или pull-request в ветку `main`.
+
+Workflow расположен по пути:
+
+```
+.github/workflows/ci.yml
+```
+
+Шаги, выполняемые в CI:
+
+1. Получение репозитория:
+
+```
+uses: actions/checkout@v4
+```
+
+2. Установка Go:
+
+```
+uses: actions/setup-go@v5
+with:
+  go-version: "1.22"
+```
+
+3. Установка golangci-lint:
+
+```
+go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+```
+
+4. Запуск линтера:
+
+```
+make lint
+```
+
+5. Запуск unit-тестов usecase-слоя:
+
+```
+cd pr-manager-service
+go test ./internal/usecase -count=1
+```
+
+Интеграционные и нагрузочные тесты в CI не запускаются, так как требуют развернутого docker-окружения и внешних сервисов.
+
+## Development Workflow
+
+Весь процесс разработки велся в GitHub Projects в формате Kanban-доски.  
+Для каждой задачи создавался отдельный task (issue) и соответствующая feature-ветка.
+
+Подход включал:
+
+- постановку задач в столбец *Backlog*;
+- перемещение задач по стадиям *In Progress → Review → Done*;
+- выполнение каждого функционального блока в отдельной ветке (`features/*`);
+- создание pull request после завершения задачи;
+- автоматическую проверку изменений через GitHub Actions (линтер + unit-тесты);
+- поддержание чистой истории коммитов и прозрачного хода работы.
+
+Такая организация позволила:
+- структурировать выполнение задания в виде небольших автономных задач;
+- легко отслеживать прогресс;
+- проводить разработку в соответствии с best-practices Git Flow;
+- обеспечить читаемость и воспроизводимость истории репозитория.
+
+
+
 ## Реализованные требования
 
 Обязательная часть:
@@ -342,8 +424,12 @@ GET /stats
 Дополнительная часть:
 
 - Добавлен простой эндпоинт статистики: `GET /stats` (имя, версия, время).
-- Проведено нагрузочное тестирование решения (k6, два сценария; отчёт в `load-testing-report.md`).
+- Проведено нагрузочное тестирование решения (k6, два сценария). Отчёт в `docs/load-testing-report.md`.
 - Реализовано интеграционное/E2E-тестирование (HTTP-тесты в `internal/integration-tests`).
 - Описана конфигурация и запуск линтера (`golangci-lint`, gofumpt, errcheck и др.).
 
-Массовая деактивация пользователей команды и расширенная безопасная переназначаемость открытых PR не реализованы в рамках тестового, но архитектура сервисов и usecase-слоя позволяет добавить эту функциональность поверх существующих интерфейсов.
+## Допущения и принятые решения
+
+- Аутентификация реализована через простой формат токена `Authorization: Bearer <role>:<user_id>`, т.к. в задании не было требований к полноценной auth-системе. Это позволяет сфокусироваться на бизнес-логике сервиса.
+- Эндпоинт `/stats` возвращает базовую информацию о сервисе (name, version, time), а не сложную бизнес-статистику. Для более подробных показателей используются метрики Prometheus и дашборды Grafana.
+- Массовая деактивация и безопасная переназначаемость открытых PR не реализованы в рамках тестового задания из-за ограничения по времени. Архитектура usecase-слоя и интерфейсов хранилища позволяет добавить эту логику позднее.
