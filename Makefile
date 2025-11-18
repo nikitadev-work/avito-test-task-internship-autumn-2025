@@ -1,5 +1,5 @@
 # docker-compose.yml or docker-compose.dev.yml
-COMPOSE_FILE = ./ops/docker-compose.dev.yml
+COMPOSE_FILE = docker-compose.yml
 
 .PHONY: dev-up dev-down dev-restart clear-volumes \
 	dev-logs-pr-manager-service dev-logs-all \
