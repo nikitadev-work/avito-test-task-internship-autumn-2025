@@ -1,12 +1,12 @@
 services:
   pr-manager-service:
     build:
-      context: /pr-manager-service
+      context: ./pr-manager-service
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
     env_file:
-      - /pr-manager-service/.env 
+      - ./pr-manager-service/.env 
     depends_on:
       postgres-db:
         condition: service_healthy
@@ -39,7 +39,7 @@ services:
       postgres-db:
         condition: service_healthy
     volumes:
-      - /pr-manager-service/migrations:/migrations
+      - ./pr-manager-service/migrations:/migrations
     command: [
       "-path=/migrations",
       "-database=postgres://dbuser:dbpassword@postgres-db:5432/pr-manager-db?sslmode=disable",
@@ -48,7 +48,6 @@ services:
     networks:
       - services-network
 
-
   prometheus:
     image: prom/prometheus:v2.54.0
     command:
@@ -56,7 +55,7 @@ services:
       - "--storage.tsdb.path=/prometheus"
       - "--storage.tsdb.retention.time=24h"
     volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./ops/prometheus.yml:/etc/prometheus/prometheus.yml:ro
       - prometheus_data:/prometheus
     ports:
       - "9090:9090"
@@ -71,7 +70,7 @@ services:
     ports:
       - "3100:3100"
     volumes:
-      - ./loki-config.yml:/etc/loki/config.yml:ro
+      - ./ops/loki-config.yml:/etc/loki/config.yml:ro
       - loki_data:/loki
     networks:
       - services-network
@@ -82,7 +81,7 @@ services:
     volumes:
       - /var/lib/docker/containers:/var/lib/docker/containers:ro
       - /var/log:/var/log:ro
-      - ./promtail-config.yml:/etc/promtail/config.yml:ro
+      - ./ops/promtail-config.yml:/etc/promtail/config.yml:ro
     depends_on:
       - loki
     networks:
@@ -96,8 +95,8 @@ services:
       GF_SECURITY_ADMIN_USER: admin
       GF_SECURITY_ADMIN_PASSWORD: admin
     volumes:
-      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
-      - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+      - ./ops/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+      - ./ops/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
     depends_on:
       - prometheus
       - loki
@@ -111,7 +110,7 @@ services:
     environment:
       SWAGGER_JSON: /api/openapi.yml
     volumes:
-      - ../docs/contracts/pr-manager-service-openapi.yml:/api/openapi.yml:ro
+      - ./docs/contracts/pr-manager-service-openapi.yml:/api/openapi.yml:ro
     networks:
       - services-network
 
